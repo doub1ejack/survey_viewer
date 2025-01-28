@@ -15,3 +15,18 @@
 .layoutflow .controls button:first-child {
   margin-right: 10px;
 }
+
+/* Default edge style */
+.default-edge .react-flow__edge-path {
+  stroke: #ddd;
+  stroke-width: 1px;
+}
+.default-edge text.react-flow__edge-text {
+  fill: #ddd;
+}
+
+/* Highlighted edge style */
+.highlighted-edge .react-flow__edge-path {
+  stroke: red;
+  stroke-width: 2px;
+}

@@ -1,15 +1,14 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import ReactFlow, {
   addEdge,
   ConnectionLineType,
   useNodesState,
-  useEdgesState
+  useEdgesState,
 } from "reactflow";
 import dagre from "dagre";
 import "reactflow/dist/style.css";
 
 import { initialNodes, initialEdges } from "./mock.js";
-
 import "./index.css";
 
 const dagreGraph = new dagre.graphlib.Graph();
@@ -41,7 +40,7 @@ const getLayoutedElements = (nodes, edges, direction = "TB") => {
     // so it matches the React Flow node anchor point (top left).
     node.position = {
       x: nodeWithPosition.x - nodeWidth / 2,
-      y: nodeWithPosition.y - nodeHeight / 2
+      y: nodeWithPosition.y - nodeHeight / 2,
     };
 
     return node;
@@ -58,6 +57,7 @@ const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
 const LayoutFlow = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+  const [highlightedNode, setHighlightedNode] = useState(null);
 
   const onConnect = useCallback(
     (params) =>
@@ -69,11 +69,12 @@ const LayoutFlow = () => {
       ),
     []
   );
+
   const onLayout = useCallback(
     (direction) => {
       const {
         nodes: layoutedNodes,
-        edges: layoutedEdges
+        edges: layoutedEdges,
       } = getLayoutedElements(nodes, edges, direction);
 
       setNodes([...layoutedNodes]);
@@ -82,20 +83,37 @@ const LayoutFlow = () => {
     [nodes, edges]
   );
 
+  const onNodeClick = useCallback(
+    (event, node) => {
+      setHighlightedNode(node.id);
+    },
+    [setHighlightedNode]
+  );
+
+  // Apply CSS class based on whether the edge is connected to the highlighted node
+  const highlightedEdges = edges.map((edge) => ({
+    ...edge,
+    className:
+      edge.source === highlightedNode || edge.target === highlightedNode
+        ? "highlighted-edge"
+        : "default-edge",
+  }));
+
   return (
     <div className="layoutflow">
       <ReactFlow
         nodes={nodes}
-        edges={edges}
-        // onNodesChange={onNodesChange}
-        // onEdgesChange={onEdgesChange}
+        edges={highlightedEdges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onNodeClick={onNodeClick}
         onConnect={onConnect}
         connectionLineType={ConnectionLineType.SmoothStep}
         fitView
       />
       <div className="controls">
-        <button onClick={() => onLayout("TB")}>vertical layout</button>
-        <button onClick={() => onLayout("LR")}>horizontal layout</button>
+        <button onClick={() => onLayout("TB")}>Vertical Layout</button>
+        <button onClick={() => onLayout("LR")}>Horizontal Layout</button>
       </div>
     </div>
   );
