@@ -154,40 +154,40 @@ export const initialNodes = [
 ];
 
 export const initialEdges = [
-  { id: "intro-q2", source: "intro", target: "q2", label: "[intro] == 1" },
+  { id: "intro-q2", source: "intro", target: "q2", label: "Opt 1" },
   {
     id: "intro-refusal",
     source: "intro",
     target: "refusal",
-    label: "[intro] == 2",
+    label: "Opt 2",
   },
   {
     id: "intro-ineligible",
     source: "intro",
     target: "ineligible",
-    label: "[intro] == 3",
+    label: "Opt 3",
   },
   {
     id: "intro-refusal-4",
     source: "intro",
     target: "refusal",
-    label: "[intro] == 4",
+    label: "Opt 4",
   },
   { id: "intro-q2-default", source: "intro", target: "q2", label: "default" },
-  { id: "q1-q2", source: "q1", target: "q2", label: "[q1] == 1" },
+  { id: "q1-q2", source: "q1", target: "q2", label: "Opt 1" },
   {
     id: "q1-ineligible",
     source: "q1",
     target: "ineligible",
-    label: "[q1] == 2",
+    label: "Opt 2",
   },
   { id: "q1-q2-default", source: "q1", target: "q2", label: "default" },
-  { id: "q2-close", source: "q2", target: "close", label: "[q2] ==1" },
+  { id: "q2-close", source: "q2", target: "close", label: "Opt 1" },
   {
     id: "q2-online_refusal",
     source: "q2",
     target: "online_refusal",
-    label: "[q2] ==2",
+    label: "Opt 2",
   },
   { id: "q2-close-default", source: "q2", target: "close", label: "default" },
 ];
