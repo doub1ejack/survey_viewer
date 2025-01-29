@@ -9,7 +9,7 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-scripts": "^5.0.1",
-    "reactflow": "11.3.3"
+    "reactflow": "^12.0.0"
   },
   "main": "/index.js",
   "keywords": [],
