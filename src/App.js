@@ -1,27 +1,36 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import ReactFlow, {
   addEdge,
   ConnectionLineType,
   useNodesState,
   useEdgesState,
+  MiniMap,
 } from "reactflow";
 import "reactflow/dist/style.css";
 
-import { initialNodes, initialEdges } from "./mock.js";
+import { initialNodes as initialNodes1, initialEdges as initialEdges1 } from "./mock1.js";
+import { initialNodes as initialNodes2, initialEdges as initialEdges2 } from "./mock2.js";
 import { getLayoutedElements } from "./utils.js";  // uses dagre for automatic layout
 import "./index.css";
 
-
-const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
-  initialNodes,
-  initialEdges
-);
-
 // react component
 const LayoutFlow = () => {
-  const [nodes, setNodes, onNodesChange] = useNodesState(layoutedNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(layoutedEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [highlightedNode, setHighlightedNode] = useState(null);
+  const [activeSurvey, setActiveSurvey] = useState("survey1");
+  const [activeLayout, setActiveLayout] = useState("TB");
+
+  const loadSurvey = useCallback((nodes, edges, survey) => {
+    const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(nodes, edges);
+    setNodes([...layoutedNodes]);
+    setEdges([...layoutedEdges]);
+    setActiveSurvey(survey);
+  }, [setNodes, setEdges]);
+
+  useEffect(() => {
+    loadSurvey(initialNodes1, initialEdges1, "survey1");
+  }, [loadSurvey]);
 
   const onConnect = useCallback(
     (params) =>
@@ -44,6 +53,7 @@ const LayoutFlow = () => {
 
       setNodes([...layoutedNodes]);
       setEdges([...layoutedEdges]);
+      setActiveLayout(direction);
     },
     [nodes, edges]
   );
@@ -76,10 +86,38 @@ const LayoutFlow = () => {
         onConnect={onConnect}         // Callback for when a connection is made
         connectionLineType={ConnectionLineType.SmoothStep} // Type of connection line
         fitView                       // Automatically fit the view to the nodes and edges
-      />
+      >
+        {nodes.length > 10 && <MiniMap />} {/* Show MiniMap for large surveys */}
+      </ReactFlow>
       <div className="controls">
-        <button onClick={() => onLayoutButtonClick("TB")}>Vertical Layout</button>
-        <button onClick={() => onLayoutButtonClick("LR")}>Horizontal Layout</button>
+        <div className="pair">
+          <button
+            className={activeLayout === "TB" ? "active" : ""}
+            onClick={() => onLayoutButtonClick("TB")}
+          >
+            Vertical
+          </button>
+          <button
+            className={activeLayout === "LR" ? "active" : ""}
+            onClick={() => onLayoutButtonClick("LR")}
+          >
+            Horizontal
+          </button>
+        </div>
+        <div className="pair">
+          <button
+            className={activeSurvey === "survey1" ? "active" : ""}
+            onClick={() => loadSurvey(initialNodes1, initialEdges1, "survey1")}
+          >
+            Survey 1
+          </button>
+          <button
+            className={activeSurvey === "survey2" ? "active" : ""}
+            onClick={() => loadSurvey(initialNodes2, initialEdges2, "survey2")}
+          >
+            Survey 2
+          </button>
+        </div>
       </div>
     </div>
   );
