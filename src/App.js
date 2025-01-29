@@ -34,7 +34,8 @@ const LayoutFlow = () => {
     []
   );
 
-  const onLayout = useCallback(
+  // Btns to change layout direction (Top>Bottom or Left>Right)
+  const onLayoutButtonClick = useCallback(
     (direction) => {
       const {
         nodes: layoutedNodes,
@@ -47,6 +48,7 @@ const LayoutFlow = () => {
     [nodes, edges]
   );
 
+  // Node onClick event
   const onNodeClick = useCallback(
     (event, node) => {
       setHighlightedNode(node.id);
@@ -76,8 +78,8 @@ const LayoutFlow = () => {
         fitView                       // Automatically fit the view to the nodes and edges
       />
       <div className="controls">
-        <button onClick={() => onLayout("TB")}>Vertical Layout</button>
-        <button onClick={() => onLayout("LR")}>Horizontal Layout</button>
+        <button onClick={() => onLayoutButtonClick("TB")}>Vertical Layout</button>
+        <button onClick={() => onLayoutButtonClick("LR")}>Horizontal Layout</button>
       </div>
     </div>
   );
