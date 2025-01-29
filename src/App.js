@@ -7,11 +7,12 @@ import ReactFlow, {
   MiniMap,
 } from "reactflow";
 import "reactflow/dist/style.css";
-
-import { initialNodes as initialNodes1, initialEdges as initialEdges1 } from "./mock1.js";
-import { initialNodes as initialNodes2, initialEdges as initialEdges2 } from "./mock2.js";
 import { getLayoutedElements } from "./utils.js";  // uses dagre for automatic layout
 import "./index.css";
+
+// import mock data
+import { initialNodes as initialNodes1, initialEdges as initialEdges1 } from "./mock1.js";
+import { initialNodes as initialNodes2, initialEdges as initialEdges2 } from "./mock2.js";
 
 // react component
 const LayoutFlow = () => {
