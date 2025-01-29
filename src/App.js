@@ -66,14 +66,16 @@ const LayoutFlow = () => {
     },
     [setHighlightedNode]
   );
-
+  
   // Apply CSS class based on whether the edge is connected to the highlighted node
   const highlightedEdges = edges.map((edge) => ({
     ...edge,
-    className:
-      edge.source === highlightedNode || edge.target === highlightedNode
-        ? "highlighted-edge"
-        : "default-edge",
+    className: edge.source === highlightedNode || edge.target === highlightedNode
+      ? "highlighted-edge"
+      : "default-edge",
+    animated: edge.source === highlightedNode || edge.target === highlightedNode
+      ? true
+      : false,
   }));
 
   return (
@@ -87,6 +89,8 @@ const LayoutFlow = () => {
         onConnect={onConnect}         // Callback for when a connection is made
         connectionLineType={ConnectionLineType.SmoothStep} // Type of connection line
         fitView                       // Automatically fit the view to the nodes and edges
+        nodesDraggable={true}         // Enable node dragging
+        nodesConnectable={false}      // Disable node connecting
       >
         {nodes.length > 10 && <MiniMap />} {/* Show MiniMap for large surveys */}
       </ReactFlow>

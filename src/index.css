@@ -40,9 +40,15 @@
 .default-edge text.react-flow__edge-text {
   fill: #ddd;
 }
-
 /* Highlighted edge style */
 .highlighted-edge .react-flow__edge-path {
   stroke: rgb(77, 134, 255);
   stroke-width: 2px;
+}
+
+/* This should actually be done by extending the default node component 
+    and setting the 'handle' attributes there */
+.react-flow__handle {
+  background: transparent;
+  border: 0;
 }
